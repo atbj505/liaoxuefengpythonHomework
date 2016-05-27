@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+import pdb; pdb.set_trace()  # XXX BREAKPOINT
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # ========================================== #
@@ -213,3 +214,60 @@
 
 # L2 = sorted(L, key=by_score)
 # print(L2)
+
+# ========================================== #
+# 使用@property
+# 请利用@property给一个Screen对象加上width和height属性，以及一个只读属性resolution：
+# class Screen(object):
+
+#     def __init__(self):
+#         super(Screen, self).__init__()
+
+#     @property
+#     def width(self):
+#         return self._width
+
+#     @width.setter
+#     def width(self, width):
+#         self._width = width
+
+#     @property
+#     def height(self):
+#         return self._height
+
+#     @height.setter
+#     def height(self, height):
+#         self._height = height
+
+#     @property
+#     def resolution(self):
+#         return self._width * self._height
+
+
+# s = Screen()
+# s.width = 1024
+# s.height = 768
+# print(s.resolution)
+# assert s.resolution == 786432, '1024 * 768 = %d ?' % s.resolution
+
+# ========================================== #
+# 枚举类
+from enum import Enum, unique
+
+
+@unique
+class WeekDay(Enum):
+    Sun = 0
+    Mon = 1
+    Tue = 2
+    Wed = 3
+    Thu = 4
+    Fri = 5
+    Sat = 6
+
+print(WeekDay.Sun)
+print(WeekDay.Sun.value)
+
+for name, value in WeekDay.__members__.items():
+	print(name, value)
+
