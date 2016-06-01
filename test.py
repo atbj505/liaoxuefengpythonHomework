@@ -1,4 +1,3 @@
-import pdb; pdb.set_trace()  # XXX BREAKPOINT
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -252,22 +251,92 @@ import pdb; pdb.set_trace()  # XXX BREAKPOINT
 
 # ========================================== #
 # 枚举类
-from enum import Enum, unique
+# from enum import Enum, unique
 
 
-@unique
-class WeekDay(Enum):
-    Sun = 0
-    Mon = 1
-    Tue = 2
-    Wed = 3
-    Thu = 4
-    Fri = 5
-    Sat = 6
+# @unique
+# class WeekDay(Enum):
+#     Sun = 0
+#     Mon = 1
+#     Tue = 2
+#     Wed = 3
+#     Thu = 4
+#     Fri = 5
+#     Sat = 6
 
-print(WeekDay.Sun)
-print(WeekDay.Sun.value)
+# print(WeekDay.Sun)
+# print(WeekDay.Sun.value)
 
-for name, value in WeekDay.__members__.items():
-	print(name, value)
+# for name, value in WeekDay.__members__.items():
+#     print(name, value)
 
+# ========================================== #
+# 调试
+# import logging
+# logging.basicConfig(level=logging.INFO)
+
+# s = '0'
+# n = int(s)
+# logging.info('n = %d' % n)
+# print(10 / n)
+
+# ========================================== #
+# 文档测试
+# 对函数fact(n)编写doctest并执行：
+# def fact(n):
+#     '''
+#      >>> fact(1)
+#      1
+#      >>> fact(3)
+#      6
+#      >>> fact(0)
+#      Traceback (most recent call last):
+#       ...
+#      ValueError
+#      >>> fact('x')
+#      Traceback (most recent call last):
+#        ...
+#      TypeError
+#     '''
+#     if n < 1:
+#         raise ValueError()
+#     if n == 1:
+#         return 1
+#     return n * fact(n - 1)
+
+# if __name__ == '__main__':
+#     import doctest
+#     doctest.testmod()
+
+# ========================================== #
+# IO
+# with open('/Users/yangqihui/Desktop/test.txt', 'w') as f:
+# print(f.read())
+# for line in f.readlines():
+# print(line.strip())
+# print(f.read(12))
+# f.write('hello tommorow')
+# with open('/Users/yangqihui/Desktop/test.txt', 'r') as f:
+# print(f.read())
+
+# ========================================== #
+# StringIO
+# from io import StringIO
+
+# f = StringIO()
+# f.write('hello')
+# f.write(' ')
+# f.write('world')
+
+# print(f.getvalue())
+
+# f1 = StringIO('Hello\nHi\ngoodbye\n')
+# for line in f1.readlines():
+#     print(line.strip())
+
+# ========================================== #
+# BytesIO
+# from io import BytesIO
+# f = BytesIO()
+# f.write('中文'.encode('utf-8'))
+# print(f.getvalue())
