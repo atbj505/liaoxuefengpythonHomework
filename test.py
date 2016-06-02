@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import logging
+logging.basicConfig(level=logging.INFO)
 
 # ========================================== #
 # 字符串和编码练习题
@@ -272,9 +274,6 @@
 
 # ========================================== #
 # 调试
-# import logging
-# logging.basicConfig(level=logging.INFO)
-
 # s = '0'
 # n = int(s)
 # logging.info('n = %d' % n)
@@ -340,3 +339,81 @@
 # f = BytesIO()
 # f.write('中文'.encode('utf-8'))
 # print(f.getvalue())
+# f1 = BytesIO(b'\xe4\xb8\xad\xe6\x96\x87')
+# print(f1.read())
+
+# ========================================== #
+# 操作文件和目录
+# import os
+
+
+# def dir_l(command):
+#     if command == "dir -l":
+#         curDir = os.path.abspath('.')
+#         dirs = os.listdir(curDir)
+#         for x in dirs:
+#             print(x)
+# dir_l('dir -l')
+
+# def find_file(dir, name):
+#     path = os.path.abspath(dir)
+#     dirs = os.listdir(path)
+#     for x in dirs:
+#         searchPath = os.path.join(path, x)
+#         logging.info(searchPath)
+#         if os.path.isdir(searchPath):
+#             find_file(searchPath, name)
+#         elif os.path.isfile(searchPath):
+#             if name in x:
+#                 print(searchPath)
+# find_file('.', 'test')
+
+# ========================================== #
+# 序列化
+# import pickle
+# d = dict(name='Bob', age=23, score=100)
+# f = open('/Users/yangqihui/Desktop/test.txt', 'wb')
+# pickle.dump(d, f)
+# f.close()
+
+# f1 = open('/Users/yangqihui/Desktop/test.txt', 'rb')
+# d = pickle.load(f1)
+# f1.close()
+# print(d)
+
+import json
+# d = dict(name='Bob', age=23, score=100)
+# jsonStr = json.dumps(d)
+# print(jsonStr)
+# f = open('/Users/yangqihui/Desktop/test.txt', 'w')
+# json.dump(d, f)
+# f.close()
+
+# d1 = json.loads(jsonStr)
+# print(d1)
+# f1 = open('/Users/yangqihui/Desktop/test.txt', 'r')
+# d2 = json.load(f1)
+# print(d2)
+
+
+class Student(object):
+    """docstring for Student"""
+
+    def __init__(self, name, age, score):
+        super(Student, self).__init__()
+        self.name = name
+        self.age = age
+        self.score = score
+
+    def __str__(self):
+        return 'Student: %s, %s, %s' % (self.name, self.age, self.score)
+    __repr__ = __str__
+
+s = Student('Bob', 23, 100)
+stuJsonStr = json.dumps(s, default=lambda obj: obj.__dict__)
+print(stuJsonStr)
+
+
+def dictToStudent(dict):
+    return Student(dict['name'], dict['age'], dict['score'])
+print(json.loads(stuJsonStr, object_hook=dictToStudent))
