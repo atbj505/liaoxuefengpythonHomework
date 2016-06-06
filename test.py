@@ -381,7 +381,7 @@ logging.basicConfig(level=logging.INFO)
 # f1.close()
 # print(d)
 
-import json
+# import json
 # d = dict(name='Bob', age=23, score=100)
 # jsonStr = json.dumps(d)
 # print(jsonStr)
@@ -396,24 +396,116 @@ import json
 # print(d2)
 
 
-class Student(object):
-    """docstring for Student"""
+# class Student(object):
+#     """docstring for Student"""
 
-    def __init__(self, name, age, score):
-        super(Student, self).__init__()
-        self.name = name
-        self.age = age
-        self.score = score
+#     def __init__(self, name, age, score):
+#         super(Student, self).__init__()
+#         self.name = name
+#         self.age = age
+#         self.score = score
 
-    def __str__(self):
-        return 'Student: %s, %s, %s' % (self.name, self.age, self.score)
-    __repr__ = __str__
+#     def __str__(self):
+#         return 'Student: %s, %s, %s' % (self.name, self.age, self.score)
+#     __repr__ = __str__
 
-s = Student('Bob', 23, 100)
-stuJsonStr = json.dumps(s, default=lambda obj: obj.__dict__)
-print(stuJsonStr)
+# s = Student('Bob', 23, 100)
+# stuJsonStr = json.dumps(s, default=lambda obj: obj.__dict__)
+# print(stuJsonStr)
 
 
-def dictToStudent(dict):
-    return Student(dict['name'], dict['age'], dict['score'])
-print(json.loads(stuJsonStr, object_hook=dictToStudent))
+# def dictToStudent(dict):
+#     return Student(dict['name'], dict['age'], dict['score'])
+# print(json.loads(stuJsonStr, object_hook=dictToStudent))
+
+# ========================================== #
+# 多进程
+
+# import os
+# print("Process %s start" % os.getpid())
+# pid = os.fork()
+# if pid == 0:
+#     print("I'm child process %s and my parent process is %s" %
+#           (os.getpid(), os.getppid()))
+# else:
+#     print("I %s just creat a child process %s" % (os.getpid(), pid))
+
+
+# from multiprocessing import Process
+# import os
+
+
+# def run_proc(p_name):
+#     print("Run child process %s %s" % (p_name, os.getpid()))
+
+# if __name__ == "__main__":
+#     print("Parent process is %s" % os.getpid())
+#     p = Process(target=run_proc, args=('test',))
+#     print("Process will start")
+# # 子进程开始
+#     p.start()
+# # 阻塞当前线程，用于进程间的同步
+#     p.join()
+#     print("Child process end")
+
+
+# from multiprocessing import Pool
+# import os
+# import time
+# import random
+
+
+# def long_time_task(p_name):
+#     print("Running task %s %s" % (p_name, os.getpid()))
+#     start = time.time()
+#     time.sleep(random.random() * 3)
+#     end = time.time()
+#     print("Tasks %s runs for %.2f seconds" % (p_name, (end - start)))
+
+# if __name__ == "__main__":
+#     print("Parent process %s" % os.getpid())
+#     p = Pool(4)
+#     for i in range(4):
+#         p.apply_async(long_time_task, args=(i,))
+#     print("Wait for all subprocesses done")
+#     p.close()
+#     p.join()
+#     print("All subprocesses done")
+
+
+# import subprocess
+# print("$ nslookup www.python.org")
+# r = subprocess.call(["nslookup", "www.python.org"])
+# print("Exit code:", r)
+
+
+from multiprocessing import Queue, Process
+import os
+import time
+import random
+
+
+def write(q):
+    print('Process to write: %s' % os.getpid())
+    for value in ['A', 'B', 'C']:
+        print('Put %s to queue' % value)
+        q.put(value)
+        time.sleep(random.random())
+
+
+def read(q):
+    print('Process to read: %s' % os.getpid())
+    while True:
+        value = q.get(True)
+        print('Get %s from queue' % value)
+
+if __name__ == '__main__':
+    q = Queue()
+    pw = Process(target=write, args=(q,))
+    pr = Process(target=read, args=(q,))
+
+    pw.start()
+    pr.start()
+
+    pw.join()
+    pr.terminate()
