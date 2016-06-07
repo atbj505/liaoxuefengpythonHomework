@@ -479,33 +479,84 @@ logging.basicConfig(level=logging.INFO)
 # print("Exit code:", r)
 
 
-from multiprocessing import Queue, Process
-import os
+# from multiprocessing import Queue, Process
+# import os
+# import time
+# import random
+
+
+# def write(q):
+#     print('Process to write: %s' % os.getpid())
+#     for value in ['A', 'B', 'C']:
+#         print('Put %s to queue' % value)
+#         q.put(value)
+#         time.sleep(random.random())
+
+
+# def read(q):
+#     print('Process to read: %s' % os.getpid())
+#     while True:
+#         value = q.get(True)
+#         print('Get %s from queue' % value)
+
+# if __name__ == '__main__':
+#     q = Queue()
+#     pw = Process(target=write, args=(q,))
+#     pr = Process(target=read, args=(q,))
+
+#     pw.start()
+#     pr.start()
+
+#     pw.join()
+#     pr.terminate()
+
+# ========================================== #
+# 多线程
+
+# import time
+# import threading
+
+
+# def loop():
+#     print("thread %s is running..." % threading.current_thread().name)
+#     n = 0
+#     while n < 5:
+#         n += 1
+#         print("thread %s >>> %s" % (threading.current_thread().name, n))
+#         time.sleep(1)
+#     print("thread %s is end" % threading.current_thread().name)
+
+# print("thread %s is running..." % threading.current_thread().name)
+# t = threading.Thread(target=loop, name="LoopThread")
+# t.start()
+# t.join()
+# print("thread %s is end" % threading.current_thread().name)
+
 import time
-import random
+import threading
+
+balance = 0
+lock = threading.Lock()
 
 
-def write(q):
-    print('Process to write: %s' % os.getpid())
-    for value in ['A', 'B', 'C']:
-        print('Put %s to queue' % value)
-        q.put(value)
-        time.sleep(random.random())
+def change_it(n):
+    global balance
+    balance += n
+    balance -= n
 
 
-def read(q):
-    print('Process to read: %s' % os.getpid())
-    while True:
-        value = q.get(True)
-        print('Get %s from queue' % value)
+def run_thread(n):
+    for i in range(10):
+        lock.acquire()
+        try:
+            change_it(n)
+        finally:
+            lock.release()
 
-if __name__ == '__main__':
-    q = Queue()
-    pw = Process(target=write, args=(q,))
-    pr = Process(target=read, args=(q,))
-
-    pw.start()
-    pr.start()
-
-    pw.join()
-    pr.terminate()
+t1 = threading.Thread(target=run_thread, args=(5,))
+t2 = threading.Thread(target=run_thread, args=(8,))
+t1.start()
+t2.start()
+t1.join()
+t2.join()
+print(balance)
