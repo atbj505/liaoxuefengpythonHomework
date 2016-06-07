@@ -466,7 +466,7 @@ logging.basicConfig(level=logging.INFO)
 #     print("Parent process %s" % os.getpid())
 #     p = Pool(4)
 #     for i in range(4):
-#         p.apply_async(long_time_task, args=(i,))
+        # p.apply_async(long_time_task, args=(i,))
 #     print("Wait for all subprocesses done")
 #     p.close()
 #     p.join()
@@ -532,31 +532,55 @@ logging.basicConfig(level=logging.INFO)
 # t.join()
 # print("thread %s is end" % threading.current_thread().name)
 
-import time
-import threading
+# import time
+# import threading
 
-balance = 0
-lock = threading.Lock()
-
-
-def change_it(n):
-    global balance
-    balance += n
-    balance -= n
+# balance = 0
+# lock = threading.Lock()
 
 
-def run_thread(n):
-    for i in range(10):
-        lock.acquire()
-        try:
-            change_it(n)
-        finally:
-            lock.release()
+# def change_it(n):
+#     global balance
+#     balance += n
+#     balance -= n
 
-t1 = threading.Thread(target=run_thread, args=(5,))
-t2 = threading.Thread(target=run_thread, args=(8,))
-t1.start()
-t2.start()
-t1.join()
-t2.join()
-print(balance)
+
+# def run_thread(n):
+#     for i in range(10):
+#         lock.acquire()
+#         try:
+#             change_it(n)
+#         finally:
+#             lock.release()
+
+# t1 = threading.Thread(target=run_thread, args=(5,))
+# t2 = threading.Thread(target=run_thread, args=(8,))
+# t1.start()
+# t2.start()
+# t1.join()
+# t2.join()
+# print(balance)
+
+# ========================================== #
+# ThreadLocal
+
+# import threading
+
+# local_school = threading.local()
+
+
+# def process_student():
+#     std = local_school.student
+#     print("Hello, %s in thread %s" % (std, threading.current_thread().name))
+
+
+# def process_thread(name):
+#     local_school.student = name
+#     process_student()
+
+# t1 = threading.Thread(target=process_thread, args=('Alice',), name='thread1')
+# t2 = threading.Thread(target=process_thread, args=('Bob',), name='thread2')
+# t1.start()
+# t2.start()
+# t1.join()
+# t2.join()
